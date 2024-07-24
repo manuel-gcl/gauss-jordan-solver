@@ -158,14 +158,23 @@ class TestGaussJordanSolver:
             [Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(0, 1), Fraction(1, 1)]
             ], False
         ),(
-            [[2, 3, -4, 5, -6, 7, 15], [4, 6, -8, 10, -12, 14, 30], [6, 9, -12, 15, -18, 21, 45],
-             [8, 12, -16, 20, -24, 5, 60], [10, 15, -20, 25, -30, 35, 0], [3, 5, -7, 9, -11, 13, -1]], [
-            [Fraction(1, 1), Fraction(0, 1), Fraction(1, 1), Fraction(-2, 1), Fraction(3, 1), Fraction(0, 1), Fraction(78, 1)],
-            [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(1, 1), Fraction(0, 1)],
-            [Fraction(0, 1), Fraction(1, 1), Fraction(-2, 1), Fraction(3, 1), Fraction(-4, 1), Fraction(0, 1), Fraction(-47,1)],
-            [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1), Fraction(0, 1)],
-            [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1)],
-            [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(-75, 1)]
+            [
+                [2, 3, -4, 5, -6, 7, 15], [4, 6, -8, 10, -12, 14, 30],
+                [6, 9, -12, 15, -18, 21, 45], [8, 12, -16, 20, -24, 5, 60],
+                [10, 15, -20, 25, -30, 35, 0], [3, 5, -7, 9, -11, 13, -1]
+            ],
+            [[Fraction(1, 1), Fraction(0, 1), Fraction(1, 1), Fraction(-2, 1),
+              Fraction(3, 1), Fraction(0, 1), Fraction(78, 1)],
+            [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1),
+             Fraction(0, 1),Fraction(1, 1), Fraction(0, 1)],
+            [Fraction(0, 1), Fraction(1, 1), Fraction(-2, 1), Fraction(3, 1),
+             Fraction(-4, 1), Fraction(0, 1), Fraction(-47,1)],
+            [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1),
+             Fraction(0, 1),Fraction(0, 1), Fraction(0, 1)],
+            [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),
+             Fraction(0, 1),Fraction(0, 1),Fraction(0, 1)],
+            [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),
+             Fraction(0, 1),Fraction(0, 1),Fraction(-75, 1)]
             ], False
         )
     ])
@@ -182,7 +191,8 @@ class TestGaussJordanSolver:
         ([[0]], 0, 0, 1, [[1]]),
         ([[1, 2], [3, 4]], 0, 0, 10, [[10, 2], [3, 4]])
     ])
-    def test_update_matrix_element(self, setup_solver ,initial_matrix, row_index, col_index, new_value, expected_matrix):
+    def test_update_matrix_element(self, setup_solver, initial_matrix,
+                                   row_index, col_index, new_value, expected_matrix):
         solver = setup_solver(initial_matrix)
         solver.update_matrix_element(row_index, col_index, new_value)
         assert solver.matrix == expected_matrix
@@ -193,7 +203,8 @@ class TestGaussJordanSolver:
         ([[1, 2], [3, 4]], 2, 0, 5),
         ([[1, 2], [3, 4]], 0, 2, 5)
     ])
-    def test_update_matrix_element_out_of_range(self, setup_solver, initial_matrix, row_index, col_index, new_value):
+    def test_update_matrix_element_out_of_range(self, setup_solver, initial_matrix,
+                                                row_index, col_index, new_value):
         solver = setup_solver(initial_matrix)
         with pytest.raises(IndexError):
             solver.update_matrix_element(row_index, col_index, new_value)
@@ -222,7 +233,8 @@ class TestGaussJordanSolver:
             ([[0.5, 1.5], [2, 3]], 0, 0, [[1, 3], [2, 3]], "F0/(1/2)"),
             ([[0, 1], [1, 2]], 0, 1, [[0, 1], [1, 2]], "F0/(1)"),
         ])
-    def test_normalize_row(self, setup_solver, matrix, row_index, col_index, expected_matrix, expected_operation):
+    def test_normalize_row(self, setup_solver, matrix, row_index,
+                           col_index, expected_matrix, expected_operation):
         solver = setup_solver(matrix)
         solver._GaussJordanSolver__normalize_row(row_index, col_index)
         assert solver.matrix == expected_matrix
@@ -264,7 +276,8 @@ class TestGaussJordanSolver:
                 [[2, 1], [3, 2]], -2, 1, [[2, 1], [3, 2]], []
             )
         ])
-    def test_make_colum_ceros(self, setup_solver, matrix, row_index, col_index, expected_matrix, expected_operations):
+    def test_make_colum_ceros(self, setup_solver, matrix, row_index,
+                              col_index, expected_matrix, expected_operations):
         solver = setup_solver(matrix)
         solver._GaussJordanSolver__make_colum_ceros(row_index, col_index)
         assert solver.matrix == expected_matrix
@@ -319,20 +332,32 @@ class TestGaussJordanSolver:
             ([[0, 0], [1, 0], [0, 0]], [[1, 0], [0, 0], [0, 0]]),
             ([[0, 0, 1], [0, 0, 1]], [[0, 0, 1], [0, 0, 1]]),
             ([
-                [Fraction(1, 1), Fraction(0, 2), Fraction(1, 1), Fraction(-2, 1), Fraction(3, 1), Fraction(0, 1), Fraction(78, 1)],
-                [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1)],
-                [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(-75, 1)],
-                [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(1, 1), Fraction(0, 1)],
-                [Fraction(0, 1), Fraction(1, 1), Fraction(-2, 1), Fraction(3, 1), Fraction(-4, 1), Fraction(0, 1), Fraction(-47,1)],
-                [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1), Fraction(0, 1)]
+                [Fraction(1, 1), Fraction(0, 2), Fraction(1, 1),Fraction(-2, 1),
+                 Fraction(3, 1), Fraction(0, 1), Fraction(78, 1)],
+                [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),
+                 Fraction(0, 1),Fraction(0, 1),Fraction(0, 1)],
+                [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),
+                 Fraction(0, 1),Fraction(0, 1),Fraction(-75, 1)],
+                [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1),
+                 Fraction(0, 1),Fraction(1, 1), Fraction(0, 1)],
+                [Fraction(0, 1), Fraction(1, 1), Fraction(-2, 1), Fraction(3, 1),
+                 Fraction(-4, 1), Fraction(0, 1), Fraction(-47,1)],
+                [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1),
+                 Fraction(0, 1),Fraction(0, 1), Fraction(0, 1)]
             ],
             [
-                [Fraction(1, 1), Fraction(0, 2), Fraction(1, 1), Fraction(-2, 1), Fraction(3, 1), Fraction(0, 1), Fraction(78, 1)],
-                [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(1, 1), Fraction(0, 1)],
-                [Fraction(0, 1), Fraction(1, 1), Fraction(-2, 1), Fraction(3, 1), Fraction(-4, 1), Fraction(0, 1), Fraction(-47,1)],
-                [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1), Fraction(0, 1)],
-                [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(-75, 1)],
-                [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1)]
+                [Fraction(1, 1), Fraction(0, 2), Fraction(1, 1), Fraction(-2, 1),
+                 Fraction(3, 1), Fraction(0, 1), Fraction(78, 1)],
+                [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1),
+                 Fraction(0, 1),Fraction(1, 1), Fraction(0, 1)],
+                [Fraction(0, 1), Fraction(1, 1), Fraction(-2, 1), Fraction(3, 1),
+                 Fraction(-4, 1), Fraction(0, 1), Fraction(-47,1)],
+                [Fraction(0, 1),Fraction(0, 1), Fraction(0, 1),Fraction(0, 1),
+                 Fraction(0, 1),Fraction(0, 1), Fraction(0, 1)],
+                [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),
+                 Fraction(0, 1),Fraction(0, 1),Fraction(-75, 1)],
+                [Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),Fraction(0, 1),
+                 Fraction(0, 1),Fraction(0, 1),Fraction(0, 1)]
             ])
         ])
     def test_order_null_columns(self, setup_solver, matrix, expected_matrix):
