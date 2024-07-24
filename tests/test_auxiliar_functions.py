@@ -6,7 +6,7 @@ import pytest
 
 from src.auxiliar_functions import convert_matrix_to_fractions, get_fraction, get_vars_list
 
-class TestAuxiliarFunctions:    
+class TestAuxiliarFunctions:
     @pytest.mark.parametrize("matrix, expected_matrix", [
             ([[0.5, 0.25], [1.5, 2.5]], [
              [Fraction(1, 2), Fraction(1, 4)], [Fraction(3, 2), Fraction(5, 2)]]),
@@ -20,7 +20,7 @@ class TestAuxiliarFunctions:
         ])
     def test_convert_matrix_to_fractions(self, matrix, expected_matrix):
         assert convert_matrix_to_fractions(matrix) == expected_matrix
-    
+
     @pytest.mark.parametrize("number, expected_fraction", [
             (0.5, Fraction(1, 2)),
             (1.5, Fraction(3, 2)),
@@ -33,7 +33,7 @@ class TestAuxiliarFunctions:
         ])
     def test_get_fraction(self, number, expected_fraction):
         assert get_fraction(number) == expected_fraction
-        
+
     @pytest.mark.parametrize("matrix, expected", [
         ([], []),
         ([[1]], ["a"]),

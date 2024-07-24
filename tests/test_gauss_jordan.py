@@ -1,8 +1,8 @@
 """
 This module contains unit tests for the GaussJordanSolver class.
 """
-import pytest
 from fractions import Fraction
+import pytest
 
 from src.gauss_jordan import GaussJordanSolver
 
@@ -12,13 +12,13 @@ class TestGaussJordanSolver:
     @pytest.fixture
     def simple_matrix(self):
         return GaussJordanSolver([])
-    
+
     @pytest.fixture
     def setup_solver(self):
         def _setup_solver(matrix):
             return GaussJordanSolver(matrix)
         return _setup_solver
-    
+
     @pytest.mark.parametrize("matrix, expected_output, has_solution", [
         (
             [[2, 4, 0], [1, 2, 0]],
@@ -93,13 +93,13 @@ class TestGaussJordanSolver:
             ], True
         )
     ])
-    def test_matrix_with_solution(self, setup_solver, matrix, expected_output, has_solution):       
+    def test_matrix_with_solution(self, setup_solver, matrix, expected_output, has_solution):
         solver = setup_solver(matrix)
         solver.solve_matrix()
-    
+
         assert solver.matrix == expected_output
         assert solver.has_solution() == has_solution
-    
+
     @pytest.mark.parametrize("matrix, has_solution", [
             ([[1, 0, 0, 2], [0, 1, 0, 3], [0, 0, 1, 4]], True),
             ([[1, 0, 5], [0, 1, 6]], True),
@@ -109,7 +109,7 @@ class TestGaussJordanSolver:
     def test_has_unique_solutions(self, setup_solver, matrix, has_solution):
         solver = setup_solver(matrix)
         assert solver.has_solution() == has_solution
-    
+
     @pytest.mark.parametrize("matrix, has_solution", [
             ([[1, 2, 3, 4], [0, 0, 0, 0], [0, 0, 0, 0]], True),
             ([[1, 2, 3], [0, 0, 0]], True),
@@ -119,7 +119,7 @@ class TestGaussJordanSolver:
     def test_has_infinite_solutions(self, setup_solver, matrix, has_solution):
         solver = setup_solver(matrix)
         assert solver.has_solution() == has_solution
-    
+
     @pytest.mark.parametrize("matrix, has_solution", [
             ([[1, 2, 3, 4], [0, 0, 0, 5], [0, 0, 0, 0]], False),
             ([[1, 1, 1], [0, 0, 1]], False),
@@ -129,7 +129,7 @@ class TestGaussJordanSolver:
     def test_has_none_solution(self, setup_solver, matrix, has_solution):
         solver = setup_solver(matrix)
         assert solver.has_solution() == has_solution
-    
+
     @pytest.mark.parametrize("matrix, expected_output, has_solution", [
         (
             [[1, 1, 1], [2, 2, 3]],
@@ -172,7 +172,7 @@ class TestGaussJordanSolver:
     def test_matrix_without_solution(self, setup_solver, matrix, expected_output, has_solution):
         solver = setup_solver(matrix)
         solver.solve_matrix()
-    
+
         assert solver.matrix == expected_output
         assert solver.has_solution() == has_solution
 
@@ -197,7 +197,7 @@ class TestGaussJordanSolver:
         solver = setup_solver(initial_matrix)
         with pytest.raises(IndexError):
             solver.update_matrix_element(row_index, col_index, new_value)
-    
+
     @pytest.mark.parametrize("matrix, expected", [
             ([], []),
             ([[0, 0, 0]], []),
@@ -267,9 +267,7 @@ class TestGaussJordanSolver:
     def test_make_colum_ceros(self, setup_solver, matrix, row_index, col_index, expected_matrix, expected_operations):
         solver = setup_solver(matrix)
         solver._GaussJordanSolver__make_colum_ceros(row_index, col_index)
-        solver.operations
         assert solver.matrix == expected_matrix
-        solver.operations
         assert solver.operations == expected_operations
 
 
@@ -283,12 +281,12 @@ class TestGaussJordanSolver:
 
         assert simple_matrix._GaussJordanSolver__get_divided_vector(
             vector, divider) == expected_vector
-        
-    
+
+
     def test_get_divided_vector_zero_division(self, simple_matrix):
         with pytest.raises(ZeroDivisionError):
             simple_matrix._GaussJordanSolver__get_divided_vector([1, 2, 3], 0)
-    
+
     @pytest.mark.parametrize("vector, expected_res", [
             ([0, 0, 0, 0], True),
             ([], True),
@@ -296,7 +294,7 @@ class TestGaussJordanSolver:
         ])
     def test_all_ceros_vector(self, simple_matrix, vector, expected_res):
         assert simple_matrix._GaussJordanSolver__all_ceros(vector) is expected_res
-    
+
     @pytest.mark.parametrize("matrix, expected_indexs", [
             ([[0, 1, 2], [1, 0, 0]], [0, 1]),
             ([[1, 2], [1, 0]], [0, 0]),
@@ -307,7 +305,7 @@ class TestGaussJordanSolver:
     def test_get_not_null_num_index(self, setup_solver, matrix, expected_indexs):
         solver = setup_solver(matrix)
         assert solver._GaussJordanSolver__get_not_null_num_index() == expected_indexs
-    
+
     @pytest.mark.parametrize("matrix, expected_matrix", [
             ([], []),
             ([[0, 0, 0], [0, 0, 0], [0, 0, 0]], [
@@ -341,7 +339,7 @@ class TestGaussJordanSolver:
         solver = setup_solver(matrix)
         solver._GaussJordanSolver__order_null_colums()
         assert solver.matrix == expected_matrix
-    
+
     @pytest.mark.parametrize("matrix, expected_max", [
             ([[0, 0], [1, 222]], 4),
             ([[0, 1, 1], [1, 0, 0]], 3),

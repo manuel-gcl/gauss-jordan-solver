@@ -28,7 +28,7 @@ def main():
         correct = input("Is the matrix correct? (y/n): ").strip().lower()
         if correct == 'y':
             break
-        elif correct == 'n':
+        if correct == 'n':
             row_index = int(input("Enter the row index of the element to change: "))
             col_index = int(input("Enter the column index of the element to change: "))
             new_value = float(input(f"Enter the new value for position ({row_index},{col_index}): "))
@@ -36,7 +36,7 @@ def main():
             solver.print_matrix()
         else:
             print("Invalid response. Please enter 'y' or 'n'")
-    
+
     solver.solve_matrix()
     solver.print_operations()
     solver.print_solutions()
