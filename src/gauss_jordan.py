@@ -22,7 +22,7 @@ class GaussJordanSolver:
         for _ in self.matrix:
             not_null_num_index = self.__get_not_null_num_index()
 
-            if not_null_num_index:
+            if not not_null_num_index:
                 continue
 
             row_index, col_index = not_null_num_index

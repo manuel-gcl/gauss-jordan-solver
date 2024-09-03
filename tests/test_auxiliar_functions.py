@@ -37,9 +37,10 @@ class TestAuxiliarFunctions:
     @pytest.mark.parametrize("matrix, expected", [
         ([], []),
         ([[1]], ["a"]),
-        ([[1], [2]], ["a", "b"]),
+        ([[1], [2]], ["a"]),
+        ([[1], [2], [3], [4], [5], [6], [7], [8]], ["a"]),
         ([[1, 3, 4], [2, 4, 5], [3, 4, -1]], ["a", "b", "c"]),
-        ([[1], [2], [3], [4], [5], [6], [7], [8]], ["a", "b", "c", "d", "e", "f", "g", "h"]),
+        ([[1, 2, 3, 4], [3, 3, 3, 3]], ["a", "b", "c", "d"])
     ])
     def test_get_vars_list(self, matrix, expected):
         assert get_vars_list(matrix) == expected
