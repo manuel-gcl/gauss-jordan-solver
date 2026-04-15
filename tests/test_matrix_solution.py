@@ -1,6 +1,7 @@
 """
 This module test gauss_jordan algorithm against other 
-resolution of linear systems obtained 
+resolution of linear systems obtained.
+Must be ejecuted manually
 from https://medium.com/jungletronics/linear-equations-solve-by-gauss-jordan-49c3c8474173
 
 """
@@ -8,7 +9,6 @@ from random import randrange
 import numpy as np
 
 from src.gauss_jordan import GaussJordanSolver
-
 
 class TestSolverResults:
     def __init__(self):
@@ -55,21 +55,25 @@ class TestSolverResults:
             if round(num, 5) != round(matrix_b[index], 5):
                 res = False
                 break
-
         return res
 
 if __name__ == "__main__":
     tester = TestSolverResults()
     tester._generate_matrix_d(100, 5, 4)
 
+    all_passed = True
+
     for m in tester.matrix_set:
         coef_m, dep_m = tester.get_coefficient_and_dependent_matrix(m)
         np_res = tester.get_res_with_numpy(np.array(coef_m), np.array(dep_m))
 
         gaussJordan_res = tester.get_res_with_gauss_jordan(m)
-
         if not tester.compare_results(np_res, gaussJordan_res):
             print("Square Matrix has different results\n")
             print(f"GJ P Method: {gaussJordan_res}\n")
             print(f"Numpy Method {np_res}\n")
+
+    if all_passed:
+        print("All 100 matrices were tested correctly and passed\n")
+
     print("End")

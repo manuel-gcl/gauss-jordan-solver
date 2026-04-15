@@ -276,10 +276,10 @@ class TestGaussJordanSolver:
                 [[2, 1], [3, 2]], -2, 1, [[2, 1], [3, 2]], []
             )
         ])
-    def test_make_colum_ceros(self, setup_solver, matrix, row_index,
+    def test_make_column_zeros(self, setup_solver, matrix, row_index,
                               col_index, expected_matrix, expected_operations):
         solver = setup_solver(matrix)
-        solver._GaussJordanSolver__make_colum_ceros(row_index, col_index)
+        solver._GaussJordanSolver__make_column_zeros(row_index, col_index)
         assert solver.matrix == expected_matrix
         assert solver.operations == expected_operations
 
@@ -305,19 +305,19 @@ class TestGaussJordanSolver:
             ([], True),
             ([0, 0, 3, 1], False)
         ])
-    def test_all_ceros_vector(self, simple_matrix, vector, expected_res):
-        assert simple_matrix._GaussJordanSolver__all_ceros(vector) is expected_res
+    def test_all_zeros_vector(self, simple_matrix, vector, expected_res):
+        assert simple_matrix._GaussJordanSolver__all_zeros(vector) is expected_res
 
-    @pytest.mark.parametrize("matrix, expected_indexs", [
+    @pytest.mark.parametrize("matrix, expected_indices", [
             ([[0, 1, 2], [1, 0, 0]], [0, 1]),
             ([[1, 2], [1, 0]], [0, 0]),
             ([[0, 0], [0, 0]], []),
             ([[0, 0, 0], [0, 0, 0], [0, 4, 0]], [2, 1]),
             ([[0, 2, 1], [0, 0, 2], [1, 0, 3], [0, 0, 0]], [0, 1])
         ])
-    def test_get_not_null_num_index(self, setup_solver, matrix, expected_indexs):
+    def test_get_not_null_num_index(self, setup_solver, matrix, expected_indices):
         solver = setup_solver(matrix)
-        assert solver._GaussJordanSolver__get_not_null_num_index() == expected_indexs
+        assert solver._GaussJordanSolver__get_not_null_num_index() == expected_indices
 
     @pytest.mark.parametrize("matrix, expected_matrix", [
             ([], []),
@@ -362,7 +362,7 @@ class TestGaussJordanSolver:
         ])
     def test_order_null_columns(self, setup_solver, matrix, expected_matrix):
         solver = setup_solver(matrix)
-        solver._GaussJordanSolver__order_null_colums()
+        solver._GaussJordanSolver__order_null_columns()
         assert solver.matrix == expected_matrix
 
     @pytest.mark.parametrize("matrix, expected_max", [

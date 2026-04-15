@@ -1,5 +1,6 @@
 import argparse
 from src.gauss_jordan import GaussJordanSolver
+from src.auxiliar_functions import is_matrix_range_inp_valid
 
 def main():
     parser = argparse.ArgumentParser(description="Gauss-Jordan Solver")
@@ -28,12 +29,19 @@ def main():
         correct = input("Is the matrix correct? (y/n): ").strip().lower()
         if correct == 'y':
             break
-        if correct == 'n':
-            row_index = int(input("Enter the row index of the element to change: "))
-            col_index = int(input("Enter the column index of the element to change: "))
-            new_value = float(input(f"Enter the new value for position ({row_index},{col_index}): "))
-            solver.update_matrix_element(row_index, col_index, new_value)
-            solver.print_matrix()
+        elif correct == 'n':
+            try:
+                row_index = int(input("Enter the row index of the element to change: "))
+                col_index = int(input("Enter the column index of the element to change: "))
+                # Check index range
+                if not is_matrix_range_inp_valid(args.rows,args.cols,row_index,col_index):
+                    continue
+                
+                new_value = float(input(f"Enter the new value for position ({row_index},{col_index}): "))
+                solver.update_matrix_element(row_index, col_index, new_value)
+                solver.print_matrix()
+            except(ValueError):
+                print("\nInvalid input. Please enter valid numbers (integers for indices, numbers for values).\n")
         else:
             print("Invalid response. Please enter 'y' or 'n'")
 

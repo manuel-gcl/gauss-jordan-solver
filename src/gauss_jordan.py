@@ -2,15 +2,15 @@
 This module contains the implementation of the GaussJordanSolver class, which is designed
 to solve systems of linear equations using the Gauss-Jordan elimination method
 """
-from src.auxiliar_functions import convert_matrix_to_fractions, get_fraction, get_vars_list
+from src.auxiliar_functions import convert_matrix_to_fractions, get_fraction, get_vars_list, is_matrix_range_inp_valid
 
 class GaussJordanSolver:
     def __init__(self, matrix):
         self.matrix = matrix
         self.partial_matrix_solutions = []
         self.operations = []
-        self.__processed_rows_indexs = []
-        self.__processed_cols_indexs = []
+        self.__processed_rows_indices = []
+        self.__processed_cols_indices = []
         self.__is_solved = False
 
 
@@ -31,10 +31,10 @@ class GaussJordanSolver:
 
             self.partial_matrix_solutions.append(convert_matrix_to_fractions(self.matrix[:]))
 
-            self.__make_colum_ceros(row_index, col_index)
+            self.__make_column_zeros(row_index, col_index)
 
         self.__is_solved = True
-        self.__order_null_colums()
+        self.__order_null_columns()
 
     def has_solution(self):
         """ Checks if the system of equations has a solution """
@@ -43,7 +43,7 @@ class GaussJordanSolver:
 
         for row in self.matrix:
             last_col_digit = row[-1]
-            if last_col_digit != 0 and self.__all_ceros(row[:-1]):
+            if last_col_digit != 0 and self.__all_zeros(row[:-1]):
                 return False
 
         return True
@@ -95,7 +95,8 @@ class GaussJordanSolver:
         print("-" * (max_digits + 3) * len(matrix[0]))
 
     def update_matrix_element(self, row_index, col_index, new_value):
-        if 0 <= row_index < len(self.matrix) and 0 <= col_index < len(self.matrix[0]):
+        # Check index range
+        if is_matrix_range_inp_valid(len(self.matrix),len(self.matrix[0]), row_index,col_index):
             self.matrix[row_index][col_index] = new_value
         else:
             raise IndexError("Row or column index out of range.")
@@ -107,7 +108,7 @@ class GaussJordanSolver:
         results = []
         for row in self.matrix:
             temp_eqs = []
-            if self.__all_ceros(row[:-1]):
+            if self.__all_zeros(row[:-1]):
                 continue
             for index, num in enumerate(row[:-1]):
                 if num != 0:
@@ -131,7 +132,7 @@ class GaussJordanSolver:
             self.matrix[row_index] = self.__get_divided_vector(self.matrix[row_index], pivot_value)
         self.operations.append(f"F{row_index}/({get_fraction(pivot_value)})")
 
-    def __make_colum_ceros(self, row_index, col_index):
+    def __make_column_zeros(self, row_index, col_index):
         """ Makes all elements in a column zero except for the pivot element """
 
         if not (0 <= row_index < len(self.matrix) and \
@@ -160,29 +161,29 @@ class GaussJordanSolver:
     def __get_divided_vector(self, vector, divider):
         return [num/divider for num in vector]
 
-    def __all_ceros(self, vect):
+    def __all_zeros(self, vect):
         return all(num == 0 for num in vect)
 
     def __get_not_null_num_index(self):
         """ Finds the first non-zero element in the matrix that has not been processed """
 
         for row_index, row in enumerate(self.matrix):
-            if row_index in self.__processed_rows_indexs:
+            if row_index in self.__processed_rows_indices:
                 continue
             for col_index, num in enumerate(row[:-1]):
-                if col_index in self.__processed_cols_indexs:
+                if col_index in self.__processed_cols_indices:
                     continue
                 if num != 0:
-                    self.__processed_cols_indexs.append(col_index)
-                    self.__processed_rows_indexs.append(row_index)
+                    self.__processed_cols_indices.append(col_index)
+                    self.__processed_rows_indices.append(row_index)
                     return [row_index, col_index]
         return []
 
-    def __order_null_colums(self):
+    def __order_null_columns(self):
         """ Orders the rows of the matrix by moving all zero rows to the bottom """
 
-        non_null_rows = [row for row in self.matrix if not self.__all_ceros(row[:-1])]
-        null_rows = [row for row in self.matrix if self.__all_ceros(row[:-1])]
+        non_null_rows = [row for row in self.matrix if not self.__all_zeros(row[:-1])]
+        null_rows = [row for row in self.matrix if self.__all_zeros(row[:-1])]
         self.matrix = non_null_rows + null_rows
 
     def __get_max_char_amount_in_array(self, array):
