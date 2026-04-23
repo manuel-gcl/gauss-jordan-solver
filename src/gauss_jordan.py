@@ -2,7 +2,11 @@
 This module contains the implementation of the GaussJordanSolver class, which is designed
 to solve systems of linear equations using the Gauss-Jordan elimination method
 """
-from src.auxiliar_functions import convert_matrix_to_fractions, get_fraction, get_vars_list, is_matrix_range_inp_valid
+from src.auxiliar_functions import (
+    convert_matrix_to_fractions,
+    get_fraction, get_vars_list,
+    is_matrix_range_inp_valid
+    )
 
 class GaussJordanSolver:
     def __init__(self, matrix):
@@ -11,8 +15,8 @@ class GaussJordanSolver:
         self.operations = []
         self.__processed_rows_indices = []
         self.__processed_cols_indices = []
-        self.__is_solved = False
-
+        self.is_solved = False
+        self.implicit_solutions = []
 
     def solve_matrix(self):
         """ Solves the matrix using the Gauss-Jordan elimination method """
@@ -33,12 +37,14 @@ class GaussJordanSolver:
 
             self.__make_column_zeros(row_index, col_index)
 
-        self.__is_solved = True
+        self.is_solved = True
         self.__order_null_columns()
+
+
 
     def has_solution(self):
         """ Checks if the system of equations has a solution """
-        if not self.__is_solved:
+        if not self.is_solved:
             self.solve_matrix()
 
         for row in self.matrix:
@@ -54,18 +60,21 @@ class GaussJordanSolver:
         print(f"System {'has' if has_solution else 'does not have'} solution\n")
 
         if has_solution:
-            implicit_solutions = self.__get_implicit_solutions_from_matrix()
+            self.implicit_solutions.append(self.__get_implicit_solutions_from_matrix())
             print("Implicit Equations:")
-            for eq in implicit_solutions:
+            for eq in self.implicit_solutions:
                 print(eq)
 
     def print_operations(self):
         """ Prints the operations performed on the matrix during the solution process """
 
-        print("Operations made:\n")
-        for index, matrix in enumerate(self.partial_matrix_solutions):
-            print(f"Operation {index}:", self.operations[index])
-            self.print_matrix(matrix)
+        print("Operations made:")
+        if self.partial_matrix_solutions:
+            for index, matrix in enumerate(self.partial_matrix_solutions):
+                print(f"Operation {index}:", self.operations[index])
+                self.print_matrix(matrix)
+        else:
+            print(self.operations)
 
     def print_matrix(self, matrix=None):
         """
