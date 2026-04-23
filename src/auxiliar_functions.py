@@ -36,7 +36,7 @@ def is_matrix_range_inp_valid(m_rows, m_cols, inp_rows, inp_cols):
     if not (0 <= inp_rows < m_rows) or not (0 <= inp_cols < m_cols):
         print(f"Invalid Input\n"
         f"Row range: 0 to {m_rows - 1}\n"
-        "Column range: 0 to {m_cols - 1}\n")
+        f"Column range: 0 to {m_cols - 1}\n")
         return False
     return True
 

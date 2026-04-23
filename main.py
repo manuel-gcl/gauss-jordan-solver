@@ -14,6 +14,8 @@ def main():
     parser.add_argument("-r", "--rows", type=int, required=True, help="Number of rows in the matrix")
     parser.add_argument("-c", "--cols", type=int, required=True, help="Number of columns in the matrix")
     args = parser.parse_args()
+    if args.rows <= 0 or args.cols <= 0:
+        parser.error("Error: Matrix dimensions must be greater than 0\n")
 
     matrix = []
     for i in range(args.rows):
@@ -39,7 +41,6 @@ def main():
             matrix_copy = copy.deepcopy(matrix)
             if db.check_exist(matrix_copy):
                 print("Matrix already in database, searching solution...")
-
                 results = db.get_solution(matrix_copy)[0]
                 solver.operations = json.loads(results[0].decode('utf-8'))
                 solver.implicit_solutions = json.loads(results[1].decode('utf-8'))
